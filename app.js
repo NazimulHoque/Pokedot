@@ -112,9 +112,13 @@ const drawRandomCard = (hand, deck) =>{
     //absolute index array of keys 
     var keys = Object.keys(deck);
     length = getObjectLength(keys)
+    //select randomly one of the remaining keys
     card1index = keys[getRandomInt(length)]
+    //pick a card based on a random key
     card1 = deck[card1index]
+    //give the card to the hand
     hand[card1index] = card1
+    //delete the card from the deck
     delete  deck[card1index]
 }
 
