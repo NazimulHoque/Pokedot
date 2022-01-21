@@ -64,13 +64,14 @@ function getRandomInt(max) {
 //an object used during a particular game to deal out cards
 let tableDeck = {}
 
+//copy all elements from deck to tableDeck
 Object.assign(tableDeck,deck)
 
-playerHand1 = {}
-playerHand2 = {}
-playerHand3 = {}
-playerHand4 = {}
-playerHand5 = {}
+playerHand1 = {cash: 0}
+playerHand2 = {cash: 0}
+playerHand3 = {cash: 0}
+playerHand4 = {cash: 0}
+playerHand5 = {cash: 0}
 
 let table = {
     tableDeck,
@@ -79,15 +80,22 @@ let table = {
              playerHand3,
              playerHand4,
              playerHand5],
-    community: {}
+    community: {},
+    bigblind: none,
+    smallblind: none,
+    currentbet: 0,
+    pot: 0,
+    dealer: none,
+    tablenumber: 0,
+
 }
 
 
-const dealHand = ({tableDeck, players}) =>{
+const dealHand = ( {tableDeck, players} ) =>{
     //take table deck and randomly deal 2 cards to each player, 1 to each player in a circle until all players recieve 2 cards    
     for (let k = 0; k < 2; k++){
         for (let i = 0; i < players.length; i++) {
-            drawRandomCard(players[i], tableDeck)
+            drawRandomCard(tableDeck, players[i])
             
           } 
     }
@@ -95,16 +103,37 @@ const dealHand = ({tableDeck, players}) =>{
     
 }
 
-const dealCommunity = ({tableDeck, community}) =>{
-    //deal community cards after initial player phase
+const dealCommunity_flop = ( {tableDeck, community} ) =>{
+    //deal community cards
+    //to do: other possible cases
+    if (community.length > 0){
+        return
+    }else{
+        for(let i = 0; i < 3; i++){
+        
+            drawRandomCard(tableDeck, community)
+        }
+    }
+    
 }
+
+const dealCommunity_river = ( {tableDeck, community} ) =>{
+    if (community.length <3){
+        return
+    }else{
+        drawRandomCard(tableDeck, community)
+    }
+
+}
+
+
 
 
 const getObjectLength = (obj) => {
     return Object.keys(obj).length
 }
 
-const drawRandomCard = (hand, deck) =>{
+const drawRandomCard = (deck, hand) =>{
     // there is a probably  a more efficient way to do this, whomever decides to fix this, you're a nerd
     //get first random card transfer it to the the players hand
     //this is done this way because the index within the object changes, while the key array index only shortens 
@@ -127,6 +156,11 @@ const drawRandomCard = (hand, deck) =>{
 //console.log(tableDeck)
 //console.log(tableDeck[getRandomInt(52)], tableDeck[getRandomInt(52)])
 
+//this is the basic sequence of events, with betting phases inbetween 
 dealHand(table)
+dealCommunity_flop(table)
+dealCommunity_river(table)
+dealCommunity_river(table)
 
 console.log(table)
+console.log(getObjectLength(table.community),table.players.length*2,getObjectLength(table.tableDeck))
