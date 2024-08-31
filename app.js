@@ -1,59 +1,116 @@
 
-//Prototype deck that never changes
+//default deck that never changes
 const deck = [
-            'K of Clubs',
-            'K of Spades',
-            'K of Diamonds',
-            'K of Hearts',
-            'Q of Clubs',
-            'Q of Spades',
-            'Q of Diamonds',
-            'Q of Hearts',
-            'J of Clubs',
-            'J of Spades',
-            'J of Diamonds',
-            'J of Hearts',
-            '10 of Clubs',
-            '10 of Spades',
-            '10 of Diamonds',
-            '10 of Hearts',
-            '9 of Clubs',
-            '9 of Spades',
-            '9 of Diamonds',
-            '9 of Hearts',
-            '8 of Clubs',
-            '8 of Spades',
-            '8 of Diamonds',
-            '8 of Hearts',
-            '7 of Clubs',
-            '7 of Spades',
-            '7 of Diamonds',
-            '7 of Hearts',
-            '6 of Clubs',
-            '6 of Spades',
-            '6 of Diamonds',
-            '6 of Hearts',
-            '5 of Clubs',
-            '5 of Spades',
-            '5 of Diamonds',
-            '5 of Hearts',
-            '4 of Clubs',
-            '4 of Spades',
-            '4 of Diamonds',
-            '4 of Hearts',
-            '3 of Clubs',
-            '3 of Spades',
-            '3 of Diamonds',
-            '3 of Hearts',
-            '2 of Clubs',
-            '2 of Spades',
-            '2 of Diamonds',
-            '2 of Hearts',
-            'A of Clubs',
-            'A of Spades',
-            'A of Diamonds',
-            'A of Hearts'
+            'K C',
+            'K S',
+            'K D',
+            'K H',
+            'Q C',
+            'Q S',
+            'Q D',
+            'Q H',
+            'J C',
+            'J S',
+            'J D',
+            'J H',
+            '10 C',
+            '10 S',
+            '10 D',
+            '10 H',
+            '9 C',
+            '9 S',
+            '9 D',
+            '9 H',
+            '8 C',
+            '8 S',
+            '8 D',
+            '8 H',
+            '7 C',
+            '7 S',
+            '7 D',
+            '7 H',
+            '6 C',
+            '6 S',
+            '6 D',
+            '6 H',
+            '5 C',
+            '5 S',
+            '5 D',
+            '5 H',
+            '4 C',
+            '4 S',
+            '4 D',
+            '4 H',
+            '3 C',
+            '3 S',
+            '3 D',
+            '3 H',
+            '2 C',
+            '2 S',
+            '2 D',
+            '2 H',
+            'A C',
+            'A S',
+            'A D',
+            'A H'
             ]
+
+
+//Prototype deck that never changes
+const deck2 = [
+    [1,'K','C'],
+    [2,'K','S'],
+    [3,'K','D'],
+    [4,'K','H'],
+    [5,'Q','C'],
+    [6,'Q','S'],
+    [7,'Q','D'],
+    [8,'Q','H'],
+    [9,'J','C'],
+    [10,'J','S'],
+    [11,'J','D'],
+    [12,'J','H'],
+    [13,10,'C'],
+    [14,10,'S'],
+    [15,10,'D'],
+    [16,10,'H'],
+    [17,9,'C'],
+    [18,9,'S'],
+    [19,9,'D'],
+    [20,9,'H'],
+    [21,8,'C'],
+    [22,8,'S'],
+    [23,8,'D'],
+    [24,8,'H'],
+    [25,7,'C'],
+    [26,7,'S'],
+    [27,7,'D'],
+    [28,7,'H'],
+    [29,6,'C'],
+    [30,6,'S'],
+    [31,6,'D'],
+    [32,6,'H'],
+    [33,5,'C'],
+    [34,5,'S'],
+    [35,5,'D'],
+    [36,5,'H'],
+    [37,4,'C'],
+    [38,4,'S'],
+    [39,4,'D'],
+    [40,4,'H'],
+    [41,3,'C'],
+    [42,3,'S'],
+    [43,3,'D'],
+    [44,3,'H'],
+    [45,2,'C'],
+    [46,2,'S'],
+    [47,2,'D'],
+    [48,2,'H'],
+    [49,'A','C'],
+    [50,'A','S'],
+    [51,'A','D'],
+    [52,'A','H']
+    ]
 
 
 //computes random number in range from 0 inclusive to max exclusive
@@ -65,13 +122,18 @@ function getRandomInt(max) {
 let tableDeck = {}
 
 //copy all elements from deck to tableDeck
-Object.assign(tableDeck,deck)
+Object.assign(tableDeck,deck2)
 
-playerHand1 = {cash: 0}
-playerHand2 = {cash: 0}
-playerHand3 = {cash: 0}
-playerHand4 = {cash: 0}
-playerHand5 = {cash: 0}
+
+const processTableDeck = (tableDeck, deck) => {
+
+}
+
+playerHand1 = {hand:{}, cash: 0}
+playerHand2 = {hand:{}, cash: 0}
+playerHand3 = {hand:{}, cash: 0}
+playerHand4 = {hand:{}, cash: 0}
+playerHand5 = {hand:{}, cash: 0}
 
 let table = {
     tableDeck,
@@ -81,11 +143,11 @@ let table = {
              playerHand4,
              playerHand5],
     community: {},
-    bigblind: none,
-    smallblind: none,
+    bigblind: null,
+    smallblind: null,
     currentbet: 0,
     pot: 0,
-    dealer: none,
+    dealer: null,
     tablenumber: 0,
 
 }
@@ -95,7 +157,7 @@ const dealHand = ( {tableDeck, players} ) =>{
     //take table deck and randomly deal 2 cards to each player, 1 to each player in a circle until all players recieve 2 cards    
     for (let k = 0; k < 2; k++){
         for (let i = 0; i < players.length; i++) {
-            drawRandomCard(tableDeck, players[i])
+            drawRandomCard(tableDeck, players[i].hand)
             
           } 
     }
@@ -106,7 +168,12 @@ const dealHand = ( {tableDeck, players} ) =>{
 const dealCommunity_flop = ( {tableDeck, community} ) =>{
     //deal community cards
     //to do: other possible cases
-    if (community.length > 0){
+    //console.log("------------------------------------------------------------------------------------------------")
+    //console.log(tableDeck, community)
+    //console.log(community.length)
+    //console.log("------------------------------------------------------------------------------------------------")
+    if (getObjectLength(community) > 0){
+        console.log("already has cards")
         return
     }else{
         for(let i = 0; i < 3; i++){
@@ -118,7 +185,10 @@ const dealCommunity_flop = ( {tableDeck, community} ) =>{
 }
 
 const dealCommunity_river = ( {tableDeck, community} ) =>{
-    if (community.length <3){
+    if (getObjectLength(community) <3){
+        console.log("no flop")
+        return
+    }else if(getObjectLength(community) == 5){
         return
     }else{
         drawRandomCard(tableDeck, community)
@@ -145,12 +215,30 @@ const drawRandomCard = (deck, hand) =>{
     card1index = keys[getRandomInt(length)]
     //pick a card based on a random key
     card1 = deck[card1index]
+    //console.log(card1)
+    //console.log(card1index)
     //give the card to the hand
     hand[card1index] = card1
     //delete the card from the deck
     delete  deck[card1index]
 }
 
+
+const detectHands = (community, hand) => {
+    cards = Object.assign({}, community, hand)
+    console.log(cards)
+    //high card
+    //pairs
+    //2 pair
+    //3 of a kind
+    //straight
+    //flush
+    //full house
+    //4 of a kind
+    //straight flush
+    //royal flush
+    return
+}
 
 //console.log(deck.length)
 //console.log(tableDeck)
@@ -162,5 +250,11 @@ dealCommunity_flop(table)
 dealCommunity_river(table)
 dealCommunity_river(table)
 
-console.log(table)
-console.log(getObjectLength(table.community),table.players.length*2,getObjectLength(table.tableDeck))
+//dealCommunity_flop(table)
+//dealCommunity_river(table)
+//dealCommunity_river(table)
+detectHands(table.community, table.players[0].hand)
+//console.log(table)
+//console.log(getObjectLength(table.community),table.players.length*2,getObjectLength(table.tableDeck))
+//console.log(table.community)
+//console.log(table.players)
