@@ -1,62 +1,6 @@
 
+
 //default deck that never changes
-const deck = [
-            'K C',
-            'K S',
-            'K D',
-            'K H',
-            'Q C',
-            'Q S',
-            'Q D',
-            'Q H',
-            'J C',
-            'J S',
-            'J D',
-            'J H',
-            '10 C',
-            '10 S',
-            '10 D',
-            '10 H',
-            '9 C',
-            '9 S',
-            '9 D',
-            '9 H',
-            '8 C',
-            '8 S',
-            '8 D',
-            '8 H',
-            '7 C',
-            '7 S',
-            '7 D',
-            '7 H',
-            '6 C',
-            '6 S',
-            '6 D',
-            '6 H',
-            '5 C',
-            '5 S',
-            '5 D',
-            '5 H',
-            '4 C',
-            '4 S',
-            '4 D',
-            '4 H',
-            '3 C',
-            '3 S',
-            '3 D',
-            '3 H',
-            '2 C',
-            '2 S',
-            '2 D',
-            '2 H',
-            'A C',
-            'A S',
-            'A D',
-            'A H'
-            ]
-
-
-//Prototype deck that never changes
 const deck2 = [
     [1,'K','C'],
     [2,'K','S'],
@@ -240,6 +184,28 @@ const detectHands = (community, hand) => {
     return
 }
 
+
+
+const displayCard = (card) => {
+    rank = card[1]
+    suit = card[2]
+    console.log(' _____')
+    console.log('|'+rank+'    |')
+    console.log('|     |')
+    console.log('|  '+suit+'  |')
+    console.log('|_____|')
+
+}
+
+
+const displayCards= (cards) => {
+    const keys = Object.keys(cards)
+    for (let i = 0 ;  i < keys.length; i++){
+        displayCard(cards[keys[i]])
+    }
+}
+
+
 //console.log(deck.length)
 //console.log(tableDeck)
 //console.log(tableDeck[getRandomInt(52)], tableDeck[getRandomInt(52)])
@@ -254,6 +220,10 @@ dealCommunity_river(table)
 //dealCommunity_river(table)
 //dealCommunity_river(table)
 detectHands(table.community, table.players[0].hand)
+
+
+displayCards(table.community)
+displayCards(table.players[0].hand)
 //console.log(table)
 //console.log(getObjectLength(table.community),table.players.length*2,getObjectLength(table.tableDeck))
 //console.log(table.community)
