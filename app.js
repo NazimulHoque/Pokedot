@@ -56,14 +56,53 @@ const deck2 = [
     [52,'A','H']
     ]
 
+playerHand1 = {hand:{}, cash: 0}
+playerHand2 = {hand:{}, cash: 0}
+playerHand3 = {hand:{}, cash: 0}
+playerHand4 = {hand:{}, cash: 0}
+playerHand5 = {hand:{}, cash: 0}
+ 
+
+
+//an object used during a particular game to deal out cards
+let tableDeck = {}
+
+let table = {
+        tableDeck,
+        players:[playerHand1,
+                 playerHand2,
+                 playerHand3,
+                 playerHand4,
+                 playerHand5],
+        community: {},
+        bigblind: null,
+        smallblind: null,
+        currentbet: 0,
+        pot: 0,
+        dealer: null,
+        tablenumber: 0,
+    
+}
+    
+
 
 //computes random number in range from 0 inclusive to max exclusive
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
 }
 
-//an object used during a particular game to deal out cards
-let tableDeck = {}
+
+const copyObj = (obj) => {
+    let newObj = Object.assign({}, obj)
+
+    return newObj
+}
+
+const getObjectLength = (obj) => {
+    return Object.keys(obj).length
+}
+
+
 
 //copy all elements from deck to tableDeck
 Object.assign(tableDeck,deck2)
@@ -73,28 +112,6 @@ const processTableDeck = (tableDeck, deck) => {
 
 }
 
-playerHand1 = {hand:{}, cash: 0}
-playerHand2 = {hand:{}, cash: 0}
-playerHand3 = {hand:{}, cash: 0}
-playerHand4 = {hand:{}, cash: 0}
-playerHand5 = {hand:{}, cash: 0}
-
-let table = {
-    tableDeck,
-    players:[playerHand1,
-             playerHand2,
-             playerHand3,
-             playerHand4,
-             playerHand5],
-    community: {},
-    bigblind: null,
-    smallblind: null,
-    currentbet: 0,
-    pot: 0,
-    dealer: null,
-    tablenumber: 0,
-
-}
 
 
 const dealHand = ( {tableDeck, players} ) =>{
@@ -143,9 +160,6 @@ const dealCommunity_river = ( {tableDeck, community} ) =>{
 
 
 
-const getObjectLength = (obj) => {
-    return Object.keys(obj).length
-}
 
 const drawRandomCard = (deck, hand) =>{
     // there is a probably  a more efficient way to do this, whomever decides to fix this, you're a nerd
@@ -153,7 +167,7 @@ const drawRandomCard = (deck, hand) =>{
     //this is done this way because the index within the object changes, while the key array index only shortens 
     
     //absolute index array of keys 
-    var keys = Object.keys(deck);
+    let keys = Object.keys(deck);
     length = getObjectLength(keys)
     //select randomly one of the remaining keys
     card1index = keys[getRandomInt(length)]
@@ -169,8 +183,11 @@ const drawRandomCard = (deck, hand) =>{
 
 
 const detectHands = (community, hand) => {
-    cards = Object.assign({}, community, hand)
+    let cards = Object.assign({}, community, hand)
     console.log(cards)
+
+    let normalized = normalizeCards(cards)
+    console.log(normalized)
     //high card
     //pairs
     //2 pair
@@ -186,11 +203,70 @@ const detectHands = (community, hand) => {
 
 
 
+const normalizeCards = (hand) => {
+    //current avaialble hand
+    let cards = copyObj(hand)
+    let normalized = []
+     //ranks = [2 ,3 ,4 ,5, 6 ,7 ,8 ,9 , 10 ,'J' ,'Q' ,'K' ,'A']
+     const Ranks = {
+        'A' : 14 ,
+        'K' : 13 ,
+        'Q' : 12 ,
+        'J' : 11 ,
+         10 : 10 ,
+         9  : 9  ,
+         8  : 8  ,
+         7  : 7  ,
+         6  : 6  ,
+         5  : 5  ,
+         4  : 4  ,
+         3  : 3  ,
+         2  : 2  
+     }
+
+
+     while (!isEmpty(cards)){
+        let keys = Object.keys(cards);
+        let highestCardScore = Ranks[cards[keys[0]][1]]
+        let currentHighestCardScore = 0
+        let highestCard = cards[keys[0]]
+       
+        //check for type safety 
+   
+       for (let i = 0; i < keys.length; i++) {
+
+            currentHighestCardScore = Ranks[cards[keys[i]][1]]
+
+           if (highestCardScore <= currentHighestCardScore){
+               highestCardScore = currentHighestCardScore
+               highestCard = cards[keys[i]]
+              
+           }
+               
+       }
+       normalized.push(highestCard)
+       delete cards[highestCard[0]-1]
+       //console.log(highestCard, highestCardScore)
+       //console.log(cards, hand)
+       
+     }
+
+     
+     return normalized
+}
+
+
+
+
 const displayCard = (card) => {
     rank = card[1]
     suit = card[2]
     console.log(' _____')
-    console.log('|'+rank+'    |')
+    if (rank == 10) {
+        console.log('|'+rank+'   |')
+    }else{
+        console.log('|'+rank+'    |')
+    }
     console.log('|     |')
     console.log('|  '+suit+'  |')
     console.log('|_____|')
@@ -198,7 +274,20 @@ const displayCard = (card) => {
 }
 
 
-const displayCards= (cards) => {
+
+
+const isEmpty = (obj) => {
+    for (const prop in obj) {
+      if (Object.hasOwn(obj, prop)) {
+        return false;
+      }
+    }
+  
+    return true;
+  }
+
+
+const displayCards = (cards) => {
     const keys = Object.keys(cards)
     for (let i = 0 ;  i < keys.length; i++){
         displayCard(cards[keys[i]])
@@ -219,11 +308,15 @@ dealCommunity_river(table)
 //dealCommunity_flop(table)
 //dealCommunity_river(table)
 //dealCommunity_river(table)
-detectHands(table.community, table.players[0].hand)
+//detectHands(table.community, table.players[0].hand)
 
 
-displayCards(table.community)
-displayCards(table.players[0].hand)
+for (var i = 0 ; i < 100; i++ ){
+    console.log(getRandomInt(52))
+}
+
+//displayCards(table.community)
+//displayCards(table.players[0].hand)
 //console.log(table)
 //console.log(getObjectLength(table.community),table.players.length*2,getObjectLength(table.tableDeck))
 //console.log(table.community)
