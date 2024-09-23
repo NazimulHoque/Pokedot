@@ -294,7 +294,7 @@ const detectHands = (community, hand) => {
     let score 
     let bestHand = {}
     let cards = Object.assign({}, community, hand)
-    console.log(cards)
+    //console.log(cards)
 
     let normalized = normalizeCards(cards)
     
@@ -312,7 +312,7 @@ const detectHands = (community, hand) => {
     //high card 
     let normalized_T4 = normalizeCards(test4)
 
-    console.log(normalized)
+    //console.log(normalized)
     let pairs = findPairs(normalized)
     let pairs_T1 = findPairs(normalized_T1)
     let pairs_T2 = findPairs(normalized_T2)
@@ -323,18 +323,13 @@ const detectHands = (community, hand) => {
     let flush = findFlush(normalized)
     let fullhouse = findFullHouse(normalized)
     //use filter and map
-    for (let i = 0 ; i < normalized.length; i ++) {
 
-        //console.log(normalized[i])
-
-    }
-
-    console.log(pairs.bestHand, pairs.winningHand)
-    console.log(pairs_T1.bestHand, pairs_T1.winningHand)
-    console.log(pairs_T2.bestHand, pairs_T2.winningHand)
-    console.log(pairs_T21.bestHand, pairs_T21.winningHand)
-    console.log(pairs_T3.bestHand, pairs_T3.winningHand)
-    console.log(pairs_T4.bestHand, pairs_T4.winningHand)
+    //console.log(pairs.bestHand, pairs.winningHand)
+    //console.log(pairs_T1.bestHand, pairs_T1.winningHand)
+    //console.log(pairs_T2.bestHand, pairs_T2.winningHand)
+    //console.log(pairs_T21.bestHand, pairs_T21.winningHand)
+    //console.log(pairs_T3.bestHand, pairs_T3.winningHand)
+    //console.log(pairs_T4.bestHand, pairs_T4.winningHand)
     //high card
     //pairs
     //2 pair
@@ -345,7 +340,7 @@ const detectHands = (community, hand) => {
     //4 of a kind
     //straight flush
     //royal flush
-    return bestHand
+    return pairs
 }
 
 
@@ -454,15 +449,35 @@ const findPairs = (hand) => {
         bestMulti.winningHand.push(highcards[3])
         bestMulti.winningHand.push(highcards[4])
     }
-
+    
     return bestMulti
 
 }
 
 
 const findStraights = (hand) => {
-    //detect sequences
-    return 
+    //detect sequences in a normalized hand
+    //reduce all cards in the set to ranks
+    //get rank of hiest card, go through list up to 5 cards to see if there is a sequence
+    //do this for the top 3 cards in a 7 card set 
+    //special case for A,2..etc
+    console.log(hand)
+    let rankedHand = []
+    let sequenceSet = []
+    for (let i = 0;  i< hand.length; i++){
+        rankedHand.push(Ranks[hand[i][1]])
+    }
+    let uniqueHand = [...new Set(rankedHand)];
+    console.log(rankedHand, uniqueHand)
+
+    if (uniqueHand.length > 4){
+        //logic here
+
+    }else{
+        return 
+    }
+
+    
 }
 
 
@@ -567,11 +582,18 @@ dealCommunity_river(table)
 //dealCommunity_flop(table)
 //dealCommunity_river(table)
 //dealCommunity_river(table)
-detectHands(table.community, table.players[0].hand)
+let h1 = detectHands(table.community, table.players[0].hand)
+let h2 = detectHands(table.community, table.players[1].hand)
+let h3 = detectHands(table.community, table.players[2].hand)
+let h4 = detectHands(table.community, table.players[3].hand)
+let h5 = detectHands(table.community, table.players[4].hand)
 
-
-
-
+//console.log(h1)
+//console.log(h1.winningHand.flat(), h1.bestHand)
+//console.log(h2.winningHand.flat(), h2.bestHand)
+//console.log(h3.winningHand.flat(), h3.bestHand)
+//console.log(h4.winningHand.flat(), h4.bestHand)
+//console.log(h5.winningHand.flat(), h5.bestHand)
 //displayCards(table.community)
 //displayCards(table.players[0].hand)
 //console.log(table)
